@@ -1,0 +1,98 @@
+# Base URL (change if your dev server runs elsewhere)
+@baseUrl = http://127.0.0.1:8000
+
+###
+POST http://127.0.0.1:8000/main/add-player/
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "age": "24",
+  "phone_number": "0123456789",
+  "coach_name": "Coach Mike",
+  "height": "180",
+  "weight": "78",
+  "gender": "Male",
+  "type": "weekly",
+  "situation": true,
+  "status": "active",
+  "password": "mypassword123"
+}
+
+###
+
+GET {{baseUrl}}/main/players/
+Accept: application/json
+
+###
+GET http://127.0.0.1:8000/main/player/3/
+Accept: application/json
+
+###
+
+DELETE http://127.0.0.1:8000/main/delete/3/
+###
+
+POST http://127.0.0.1:8000/main/login-player/
+Content-Type: application/json
+
+{
+  "phone_number": "0123456789",
+  "password": "mypassword123"
+}
+
+####
+PATCH http://127.0.0.1:8000/main/update-player/1/
+Content-Type: application/json
+
+{
+  "weight": "80.000",
+  "situation": true,
+  "back":["f1","f2","f3"]
+}
+###
+POST {{baseUrl}}/advertisements/add/
+Content-Type: application/json
+
+{
+  "title": "New Gym Promo",
+  "content": "Get 20% off new memberships this month!",
+  "image_url": "https://example.com/images/promo1.jpg",
+  "is_active": true
+}
+
+###
+# 2) List adverts
+GET {{baseUrl}}/advertisements/get-all/
+Accept: application/json
+
+###
+# 3) Get single advert (replace 1)
+GET {{baseUrl}}/api/adverts/1/
+Accept: application/json
+
+###
+# 4) Update advert (PUT) - full update
+PUT {{baseUrl}}/advertisements/info/1/
+Content-Type: application/json
+
+{
+  "title": "Updated Promo",
+  "content": "Updated content",
+  "image_url": "https://example.com/images/promo2.jpg",
+  "is_active": true
+}
+
+###
+# 5) Partial update (PATCH)
+PATCH {{baseUrl}}/advertisements/info/1/
+Content-Type: application/json
+
+{
+  "is_active": false
+}
+
+###
+# 6) Delete advert
+DELETE {{baseUrl}}/advertisements/info/1/
+Accept: application/json

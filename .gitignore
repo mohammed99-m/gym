@@ -1,0 +1,6 @@
+db.sqlite3
+gym/__pycache__/
+main/__pycache__/
+main/migrations/__pycache__/
+advertisements/__pycache__/
+advertisements/migrations/__pycache__/
