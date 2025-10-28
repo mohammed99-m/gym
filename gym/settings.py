@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-l)7(331o$l)-8oj@_(fkw^!^u2%3=pl110$e-o^-qgzt=(l@6s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -53,6 +53,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'gym.urls'
+# img cloud storage
+import cloudinary
+cloudinary.config(
+    cloud_name = 'dihberqmu',
+    api_key = '139238618629431',
+    api_secret = 'HYAtd2lbAQJdF8q0foLgpnI_e9Q'
+)
 
 TEMPLATES = [
     {

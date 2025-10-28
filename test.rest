@@ -96,3 +96,18 @@ Content-Type: application/json
 # 6) Delete advert
 DELETE {{baseUrl}}/advertisements/info/1/
 Accept: application/json
+####
+POST {{baseUrl}}/advertisements/add/
+Content-Type: multipart/form-data
+
+title: Super Promo
+content: 50% off this month
+image:C:\Users\mwe33\Desktop\pexels-photo-2261484.jpeg
+is_active: true
+
+
+curl -X POST http://127.0.0.1:8000/advertisements/add/ ^
+-F "title=Super Promo" ^
+-F "content=50% off this month" ^
+-F "is_active=true" ^
+-F "image_url=@C:\Users\mwe33\Desktop\pexels-photo-2261484.jpeg"

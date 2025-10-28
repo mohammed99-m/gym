@@ -12,17 +12,26 @@ def adverts_list(request):
     serializer = AdvertisementSerializer(adverts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-# Create advert
+
 @api_view(['POST'])
-@authentication_classes([])      # disables SessionAuthentication -> avoids CSRF requirement
-@permission_classes([AllowAny])  # change to proper permission in production
+@authentication_classes([])      # لا تستخدم SessionAuth → تجنب CSRF
+@permission_classes([AllowAny])  # يمكن تغييره لاحقًا للأمان
 def advert_create(request):
-    serializer = AdvertisementSerializer(data=request.data)
+
+    data = request.data.copy()  # انسخ البيانات لأنه يمكن تعديلها
+    if 'image' in request.FILES:
+        data['image_url'] = request.FILES['image_url']  # CloudinaryField يستخدم request.FILES
+
+    serializer = AdvertisementSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Advertisement created", "data": serializer.data},
-                        status=status.HTTP_201_CREATED)
+        return Response(
+            {"message": "Advertisement created successfully", "data": serializer.data},
+            status=status.HTTP_201_CREATED
+        )
     return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 # Retrieve or update or delete one advert
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
