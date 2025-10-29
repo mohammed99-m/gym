@@ -15,41 +15,34 @@ def adverts_list(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-import cloudinary.uploader
-import logging
-
-logger = logging.getLogger(__name__)
 from .serializers import AdvertisementSerializer
 
 @api_view(['POST'])
-@authentication_classes([])      # avoid SessionAuth/CSRF for this endpoint if desired
+@authentication_classes([])  
 @permission_classes([AllowAny])
-@parser_classes([MultiPartParser, FormParser, JSONParser])
+@parser_classes([MultiPartParser, FormParser])  # for file uploads
 def advert_create(request):
     data = request.data.copy()
 
-    # If client sent a Cloudinary public_id (from direct client upload), map it:
-    if 'image_public_id' in data and data.get('image_public_id'):
-        data['image_url'] = data.get('image_public_id')
-
-    # If client uploaded a file (multipart), ensure it's mapped to the serializer field:
-    if 'image' in request.FILES and 'image_url' not in data:
+    # Map the uploaded file to serializer field
+    if 'image' in request.FILES:
         data['image_url'] = request.FILES['image']
 
     serializer = AdvertisementSerializer(data=data)
-    if not serializer.is_valid():
-        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Save (serializer.create handles assigning public_id if present)
-    advert = serializer.save()
-    return Response(
-        {"message": "Advertisement created successfully", "data": AdvertisementSerializer(advert).data},
-        status=status.HTTP_201_CREATED
-    )
+    if serializer.is_valid():
+        advert = serializer.save()
+        return Response(
+            {
+                "message": "Advertisement created successfully",
+                "data": AdvertisementSerializer(advert).data
+            },
+            status=status.HTTP_201_CREATED
+        )
+    return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

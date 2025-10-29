@@ -111,3 +111,8 @@ curl -X POST mohammedgym22.pythonanywhere.com/advertisements/add/ ^
 -F "content=50% off this month" ^
 -F "is_active=true" ^
 -F "image_url=@C:\Users\mwe33\Desktop\pexels-photo-2261484.jpeg"
+
+
+curl -v -X POST https://mohammedgym22.pythonanywhere.com/advertisements/add/ ^
+  -H "Content-Type: application/json" ^
+  -d "{\"title\":\"Super Promo\",\"content\":\"50% off this month\",\"is_active\":true,\"image_public_id\":\"u6anovvdunxnmgbtbrwi\"}"
