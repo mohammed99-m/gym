@@ -107,7 +107,7 @@ is_active: true
 
 
 curl -X POST mohammedgym22.pythonanywhere.com/advertisements/add/ ^
--F "title=Super Promo" ^
+-F "title=Super Promo2" ^
 -F "content=50% off this month" ^
 -F "is_active=true" ^
 -F "image_url=@C:\Users\mwe33\Desktop\pexels-photo-2261484.jpeg"

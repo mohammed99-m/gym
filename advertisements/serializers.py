@@ -17,8 +17,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             public_id = obj.image_url
             if not public_id:
                 return None
-            # Build a secure URL. format=None leaves extension off (Cloudinary will resolve).
-            url, options = cloudinary_url(public_id, secure=True)
+            url, _ = cloudinary_url(public_id, secure=True)
             return url
         except Exception:
             return None
