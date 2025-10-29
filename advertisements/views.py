@@ -14,16 +14,17 @@ def adverts_list(request):
     serializer = AdvertisementSerializer(adverts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+from rest_framework.parsers import JSONParser
 @api_view(['POST'])
-@authentication_classes([])  # skip CSRF
+@authentication_classes([])
 @permission_classes([AllowAny])
-@parser_classes([MultiPartParser, FormParser])
+@parser_classes([JSONParser])  # JSON payload, no file parser needed
 def advert_create(request):
     data = request.data.copy()
 
-    # map uploaded file to serializer field
-    if 'image' in request.FILES:
-        data['image_url'] = request.FILES['image']  # this will let serializer upload to Cloudinary
+    public_id = data.get('image_public_id')
+    if public_id:
+        data['image_url'] = public_id  # serializer saves it as Cloudinary reference
 
     serializer = AdvertisementSerializer(data=data)
     if serializer.is_valid():
