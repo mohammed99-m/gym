@@ -2,7 +2,7 @@
 @baseUrl = http://127.0.0.1:8000
 
 ###
-POST http://127.0.0.1:8000/main/add-player/
+POST mohammedgym22.pythonanywhere.com/main/add-player/
 Content-Type: application/json
 
 {
@@ -16,7 +16,7 @@ Content-Type: application/json
   "type": "weekly",
   "situation": true,
   "status": "active",
-  "password": "mypassword123"
+  "password": "1234"
 }
 
 ###
@@ -106,7 +106,7 @@ image:C:\Users\mwe33\Desktop\pexels-photo-2261484.jpeg
 is_active: true
 
 
-curl -X POST http://127.0.0.1:8000/advertisements/add/ ^
+curl -X POST mohammedgym22.pythonanywhere.com/advertisements/add/ ^
 -F "title=Super Promo" ^
 -F "content=50% off this month" ^
 -F "is_active=true" ^
