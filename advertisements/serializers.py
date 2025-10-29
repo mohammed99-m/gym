@@ -1,6 +1,7 @@
 # serializers.py
 from rest_framework import serializers
 from .models import Advertisement
+from cloudinary.utils import cloudinary_url
 
 class AdvertisementSerializer(serializers.ModelSerializer):
     image_public_id = serializers.CharField(write_only=True, required=False, allow_null=True)
@@ -13,8 +14,12 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     def get_image_url_full(self, obj):
         try:
-            # CloudinaryField provides .url property if configured
-            return obj.image_url.url
+            public_id = obj.image_url
+            if not public_id:
+                return None
+            # Build a secure URL. format=None leaves extension off (Cloudinary will resolve).
+            url, options = cloudinary_url(public_id, secure=True)
+            return url
         except Exception:
             return None
 
