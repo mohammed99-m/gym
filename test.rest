@@ -33,16 +33,16 @@ Accept: application/json
 DELETE http://127.0.0.1:8000/main/delete/3/
 ###
 
-POST http://127.0.0.1:8000/main/login-player/
+POST http://mohammedgym22.pythonanywhere.com/main/login-player/
 Content-Type: application/json
 
 {
   "phone_number": "0123456789",
-  "password": "mypassword123"
+  "password": "1234"
 }
 
 ####
-PATCH http://127.0.0.1:8000/main/update-player/1/
+PATCH  http://mohammedgym22.pythonanywhere.com/main/update-player/1/
 Content-Type: application/json
 
 {

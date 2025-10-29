@@ -15,23 +15,22 @@ def adverts_list(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
-@authentication_classes([])      # no SessionAuth → avoid CSRF here
+@authentication_classes([])  # skip CSRF
 @permission_classes([AllowAny])
-@parser_classes([MultiPartParser, FormParser])  # ensure files are parsed
+@parser_classes([MultiPartParser, FormParser])
 def advert_create(request):
-    # copy so we can modify
     data = request.data.copy()
 
-    # Adjust according to what your client sends. If client uses key 'image', map it:
+    # map uploaded file to serializer field
     if 'image' in request.FILES:
-        data['image_url'] = request.FILES['image']
-    # Or if the client sends name 'image_url' already, no mapping necessary.
+        data['image_url'] = request.FILES['image']  # this will let serializer upload to Cloudinary
 
     serializer = AdvertisementSerializer(data=data)
     if serializer.is_valid():
         advert = serializer.save()
         return Response(
-            {"message": "Advertisement created successfully", "data": AdvertisementSerializer(advert).data},
+            {"message": "Advertisement created successfully",
+             "data": AdvertisementSerializer(advert).data},
             status=status.HTTP_201_CREATED
         )
     return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
