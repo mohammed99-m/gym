@@ -36,7 +36,6 @@ def advert_create(request):
     return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 # Retrieve or update or delete one advert
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 @authentication_classes([])      # disable session auth for write ops (adjust per security)
