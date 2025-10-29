@@ -64,3 +64,44 @@ def advert_detail(request, advert_id):
     # DELETE
     advert.delete()
     return Response({"message": "Advertisement deleted"}, status=status.HTTP_200_OK)
+
+
+
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+import cloudinary.uploader
+import traceback
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+@parser_classes([MultiPartParser, FormParser])
+def advert_create_debug(request):
+    # Show what we received
+    files_keys = list(request.FILES.keys())
+    files_info = {k: {'name': v.name, 'size': getattr(v, 'size', None)} for k, v in request.FILES.items()}
+    data_keys = list(request.data.keys())
+
+    upload_result = None
+    upload_exc = None
+
+    # If file arrived, try to upload to Cloudinary (only for debug)
+    if 'image_url' in request.FILES:
+        try:
+            result = cloudinary.uploader.upload(request.FILES['image_url'])
+            upload_result = {
+                'public_id': result.get('public_id'),
+                'secure_url': result.get('secure_url'),
+                'raw': {k: result.get(k) for k in ('bytes', 'format', 'width', 'height') if k in result}
+            }
+        except Exception as e:
+            upload_exc = traceback.format_exc()
+
+    return Response({
+        "FILES_keys": files_keys,
+        "FILES_info": files_info,
+        "DATA_keys": data_keys,
+        "cloudinary_upload_result": upload_result,
+        "cloudinary_exception": upload_exc
+    })
