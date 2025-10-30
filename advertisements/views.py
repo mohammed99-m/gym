@@ -22,49 +22,11 @@ def adverts_list(request):
     adverts = Advertisement.objects.filter(is_active=True).order_by('-date')
     serializer = AdvertisementSerializer(adverts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-import logging
-from rest_framework import generics, status
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-
-from .models import Advertisement
-from .serializers import AdvertisementSerializer
-
-logger = logging.getLogger(__name__)
 
 
-class AdvertisementCreateApi(generics.CreateAPIView):
+class AdvertisementCreateView(generics.CreateAPIView):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
-    parser_classes = [MultiPartParser, FormParser]
-    authentication_classes = []
-    permission_classes = [AllowAny]
-
-    def create(self, request, *args, **kwargs):
-        data = request.data.copy()
-        if 'image' in request.FILES:
-            data['image_url'] = request.FILES['image']
-
-        serializer = self.get_serializer(data=data)
-        if not serializer.is_valid():
-            logger.warning("Validation errors: %s", serializer.errors)
-            return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            advert = serializer.save()
-        except Exception as exc:
-            logger.exception("Exception while saving advert")
-            # Return the exception message so you can see it when calling curl / in browser
-            return Response(
-                {"error": "Exception while saving advert", "detail": str(exc)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-        return Response(
-            {"message": "Advertisement created successfully",
-             "data": AdvertisementSerializer(advert, context=self.get_serializer_context()).data},
-            status=status.HTTP_201_CREATED
-        )
 
 # Retrieve or update or delete one advert
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])

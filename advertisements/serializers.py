@@ -1,3 +1,4 @@
+# serializers.py
 from rest_framework import serializers
 from .models import Advertisement
 
@@ -10,6 +11,5 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     def get_image_url_full(self, obj):
         if obj.image_url:
-            # obj.image_url.url is provided by CloudinaryField
             return obj.image_url.url
         return None

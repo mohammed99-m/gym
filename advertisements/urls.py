@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import AdvertisementListApi , AdvertisementCreateApi
+from .views import AdvertisementListApi , AdvertisementCreateView
 
 urlpatterns = [
     ##path('get-all/', views.adverts_list, name='adverts_list'),
@@ -8,7 +8,7 @@ urlpatterns = [
     path('info/<int:advert_id>/', views.advert_detail, name='advert_detail'),
 
     path('get_all_advertisment/',AdvertisementListApi.as_view(),name="get_all_advertisment"),
-    path('create-advert/',AdvertisementCreateApi.as_view(),name="add_advertisment")
+    path('create-advert/',AdvertisementCreateView.as_view(),name="add_advertisment")
 ]
 
 # curl -X POST "http://mohammedgym22.pythonanywhere.com/advertisements/create-advert/" ^
