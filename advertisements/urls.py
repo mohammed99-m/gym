@@ -5,7 +5,7 @@ from .views import AdvertisementListApi , AdvertisementCreateApi
 urlpatterns = [
     ##path('get-all/', views.adverts_list, name='adverts_list'),
     path('add/', views.advert_create, name='advert_create'),
-    path('info/<int:advert_id>/', views.advert_detail, name='advert_detail'),
+    ##path('info/<int:advert_id>/', views.advert_detail, name='advert_detail'),
 
     path('get_all_advertisment/',AdvertisementListApi.as_view(),name="get_all_advertisment"),
     path('create-advert/',AdvertisementCreateApi.as_view(),name="add_advertisment")
