@@ -14,28 +14,57 @@ from rest_framework import generics
 class AdvertisementListApi(generics.ListAPIView):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
+    
+
+# List all adverts
+@api_view(['GET'])
+def adverts_list(request):
+    adverts = Advertisement.objects.filter(is_active=True).order_by('-date')
+    serializer = AdvertisementSerializer(adverts, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+import logging
+from rest_framework import generics, status
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+from .models import Advertisement
+from .serializers import AdvertisementSerializer
+
+logger = logging.getLogger(__name__)
 
 class AdvertisementCreateApi(generics.CreateAPIView):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
-
-    # for file uploads
     parser_classes = [MultiPartParser, FormParser]
-
-    # allow anyone (no authentication)
     authentication_classes = []
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
 
-        # handle uploaded image file
+        # map uploaded file key 'image' -> serializer field 'image_url'
         if 'image' in request.FILES:
             data['image_url'] = request.FILES['image']
 
         serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        advert = serializer.save()
+        if not serializer.is_valid():
+            # return serializer validation errors (very common)
+            logger.warning("Advert create validation errors: %s", serializer.errors)
+            return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            advert = serializer.save()
+        except Exception as exc:
+            # log full exception and return message to client (for debugging)
+            logger.exception("Error saving Advertisement")
+            return Response(
+                {
+                    "errors": "Exception when saving advertisement",
+                    "exception": str(exc)
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
         return Response(
             {
@@ -44,43 +73,6 @@ class AdvertisementCreateApi(generics.CreateAPIView):
             },
             status=status.HTTP_201_CREATED
         )
-
-# # List all adverts
-# @api_view(['GET'])
-# def adverts_list(request):
-#     adverts = Advertisement.objects.filter(is_active=True).order_by('-date')
-#     serializer = AdvertisementSerializer(adverts, many=True)
-#     return Response(serializer.data, status=status.HTTP_200_OK)
-
-from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import AdvertisementSerializer
-
-@api_view(['POST'])
-@authentication_classes([])  
-@permission_classes([AllowAny])
-@parser_classes([MultiPartParser, FormParser])  # for file uploads
-def advert_create(request):
-    data = request.data.copy()
-
-    # Map the uploaded file to serializer field
-    if 'image' in request.FILES:
-        data['image_url'] = request.FILES['image']
-
-    serializer = AdvertisementSerializer(data=data)
-    if serializer.is_valid():
-        advert = serializer.save()
-        return Response(
-            {
-                "message": "Advertisement created successfully",
-                "data": AdvertisementSerializer(advert).data
-            },
-            status=status.HTTP_201_CREATED
-        )
-    return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

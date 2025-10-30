@@ -11,9 +11,9 @@ urlpatterns = [
     path('create-advert/',AdvertisementCreateApi.as_view(),name="add_advertisment")
 ]
 
-# curl -X POST "http://127.0.0.1:8000/advertisements/create-advert/" ^
+# curl -X POST "http://mohammedgym22.pythonanywhere.com/advertisements/create-advert/" ^
 #   -H "Accept: application/json" ^
-#   -F "title=Super Promo" ^
+#   -F "title=Super Promo22" ^
 #   -F "content=50% off this month" ^
 #   -F "is_active=true" ^
 #   -F "image=@C:\Users\mwe33\Desktop\pexels-photo-2261484.jpeg"
