@@ -24,9 +24,15 @@ def adverts_list(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+from rest_framework import generics
+from rest_framework.parsers import MultiPartParser, FormParser
+from .models import Advertisement
+from .serializers import AdvertisementSerializer
+
 class AdvertisementCreateView(generics.CreateAPIView):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
+    parser_classes = (MultiPartParser, FormParser)
 
 # Retrieve or update or delete one advert
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
