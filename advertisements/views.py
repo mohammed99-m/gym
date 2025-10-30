@@ -6,13 +6,51 @@ from .models import Advertisement
 from .serializers import AdvertisementSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import generics
 
-# List all adverts
-@api_view(['GET'])
-def adverts_list(request):
-    adverts = Advertisement.objects.filter(is_active=True).order_by('-date')
-    serializer = AdvertisementSerializer(adverts, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class AdvertisementListApi(generics.ListAPIView):
+    queryset = Advertisement.objects.all()
+    serializer_class = AdvertisementSerializer
+
+class AdvertisementCreateApi(generics.CreateAPIView):
+    queryset = Advertisement.objects.all()
+    serializer_class = AdvertisementSerializer
+
+    # for file uploads
+    parser_classes = [MultiPartParser, FormParser]
+
+    # allow anyone (no authentication)
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+
+        # handle uploaded image file
+        if 'image' in request.FILES:
+            data['image_url'] = request.FILES['image']
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        advert = serializer.save()
+
+        return Response(
+            {
+                "message": "Advertisement created successfully",
+                "data": AdvertisementSerializer(advert, context=self.get_serializer_context()).data
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+# # List all adverts
+# @api_view(['GET'])
+# def adverts_list(request):
+#     adverts = Advertisement.objects.filter(is_active=True).order_by('-date')
+#     serializer = AdvertisementSerializer(adverts, many=True)
+#     return Response(serializer.data, status=status.HTTP_200_OK)
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser

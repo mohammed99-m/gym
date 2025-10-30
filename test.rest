@@ -63,7 +63,7 @@ Content-Type: application/json
 
 ###
 # 2) List adverts
-GET mohammedgym22.pythonanywhere.com/advertisements/get-all/
+GET {{baseUrl}}/advertisements/get_all_advertisment/
 Accept: application/json
 
 ###
