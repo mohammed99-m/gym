@@ -7,7 +7,7 @@ class Player(models.Model):
     date = models.DateField(auto_now_add=True)
     age = models.CharField(max_length=3)
     phone_number = models.CharField(max_length=11,unique=True)
-    coach_name = models.CharField(max_length=100,null=True , blanc=True)
+    coach_name = models.CharField(max_length=100,blank=True,null=True)
     height = models.DecimalField(max_digits=6,decimal_places=3)
     weight = models.DecimalField(max_digits=6,decimal_places=3)
 
