@@ -21,7 +21,7 @@ Content-Type: application/json
 
 ###
 
-GET {{baseUrl}}/main/players/
+GET mohammedgym22.pythonanywhere.com/main/players/
 Accept: application/json
 
 ###
@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 
 ####
-PATCH  http://mohammedgym22.pythonanywhere.com/main/update-player/1/
+PATCH  mohammedgym22.pythonanywhere.com/main/update-player/25/
 Content-Type: application/json
 
 {
