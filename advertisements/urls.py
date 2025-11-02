@@ -24,3 +24,11 @@ urlpatterns = [
 # -F "content=50% off this month" ^
 # -F "is_active=true" ^
 # -F "image=@C:/Users/mwe33/Desktop/pexels-photo-2261484.jpeg"
+
+
+# curl -X POST "http://mohammedgym22.pythonanywhere.com/advertisements/create-advert/" ^
+#   -H "Accept: application/json" ^
+#   -F "title=Super Promo22" ^
+#   -F "content=50% off this month" ^
+#   -F "is_active=true" ^
+#   -F "image=@C:/Users/mwe33/Desktop/pexels-photo-2261484.jpeg"

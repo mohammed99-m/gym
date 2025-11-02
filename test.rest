@@ -94,7 +94,18 @@ Content-Type: application/json
 
 ###
 # 6) Delete advert
-DELETE {{baseUrl}}/advertisements/info/1/
+DELETE http://mohammedgym22.pythonanywhere.com/advertisements/info/15/
+
+###
+PATCH http://mohammedgym22.pythonanywhere.com/advertisements/info/16/
+Content-Type: application/json
+
+{
+  "title": "hello"
+}
+
+###
+
 Accept: application/json
 ####
 POST {{baseUrl}}/advertisements/add/
