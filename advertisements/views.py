@@ -28,11 +28,12 @@ from rest_framework import generics
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Advertisement
 from .serializers import AdvertisementSerializer
+from rest_framework import generics, permissions
 
-class AdvertisementCreateView(generics.CreateAPIView):
-    queryset = Advertisement.objects.all()
+class AdvertisementListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Advertisement.objects.all().order_by('-date')
     serializer_class = AdvertisementSerializer
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = [MultiPartParser, FormParser]   # 
 
 # Retrieve or update or delete one advert
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
