@@ -2,7 +2,7 @@
 @baseUrl = http://127.0.0.1:8000
 
 ###
-POST {{baseUrl}}/main/add-player/
+POST mohammedgym22.pythonanywhere.com/main/add-player/
 Content-Type: application/json
 
 {
