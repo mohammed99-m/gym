@@ -10,6 +10,7 @@ class Player(models.Model):
     coach_name = models.CharField(max_length=100,blank=True,null=True)
     height = models.DecimalField(max_digits=6,decimal_places=3)
     weight = models.DecimalField(max_digits=6,decimal_places=3)
+    gender = models.CharField(max_length=6,null=True,blank=True)
 
     chest = models.JSONField(default=list,blank=True,null=True)
     back = models.JSONField(default=list,blank=True,null=True)

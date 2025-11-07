@@ -2,13 +2,13 @@
 @baseUrl = http://127.0.0.1:8000
 
 ###
-POST mohammedgym22.pythonanywhere.com/main/add-player/
+POST {{baseUrl}}/main/add-player/
 Content-Type: application/json
 
 {
   "name": "John Doe",
   "age": "24",
-  "phone_number": "0123456789",
+  "phone_number": "0123456744",
   "coach_name": "Coach Mike",
   "height": "180",
   "weight": "78",
@@ -16,12 +16,13 @@ Content-Type: application/json
   "type": "weekly",
   "situation": true,
   "status": "active",
-  "password": "1234"
+  "password": "1234",
+  "gender":"male"
 }
 
 ###
 
-GET mohammedgym22.pythonanywhere.com/main/players/
+GET {{baseUrl}}/main/players/
 Accept: application/json
 
 ###
@@ -97,7 +98,7 @@ Content-Type: application/json
 DELETE http://mohammedgym22.pythonanywhere.com/advertisements/info/15/
 
 ###
-PATCH http://mohammedgym22.pythonanywhere.com/advertisements/info/16/
+GET http://mohammedgym22.pythonanywhere.com/advertisements/info/16/
 Content-Type: application/json
 
 {
